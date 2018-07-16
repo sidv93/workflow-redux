@@ -2,13 +2,23 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import * as BoardReducer from './store/board/board.reducer';
+import * as ListReducer from './store/list/list.reducer';
+import * as CardReducer from './store/card/card.reducer';
+import { BoardEffects } from './store/board/board.effects';
+import { CardEffects } from './store/card/card.effects';
+import { ListEffects } from './store/list/list.effects';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    StoreModule.forRoot({boards: BoardReducer.BoardReducer, lists: ListReducer.ListReducer, cards: CardReducer.CardReducer}),
+    EffectsModule.forRoot([BoardEffects, CardEffects, ListEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent]
