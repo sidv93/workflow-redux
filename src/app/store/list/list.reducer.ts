@@ -13,7 +13,6 @@ const defaultState: ListsState = {
 }
 
 export function ListReducer(state = defaultState, action: Action) {
-    console.log('state=' + JSON.stringify(state) + ' action=' + action);
     switch(action.type) {
         case ListActions.GET_LISTS : {
             return { ...state };

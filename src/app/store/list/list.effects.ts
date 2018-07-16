@@ -13,8 +13,10 @@ export class ListEffects {
     @Effect()
     GetLists$: Observable<Action> = this.action$
         .ofType<ListActions.GetLists>(ListActions.GET_LISTS)
-        .switchMap(action => {
-            console.log('in list effects');
-            return action;
-        });    
+        .pipe(
+            switchMap(action => {
+                console.log('in list effects=' + JSON.stringify(action));
+                return new Observable<Action>();
+            })
+        );
 }

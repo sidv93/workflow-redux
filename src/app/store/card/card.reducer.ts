@@ -13,7 +13,6 @@ const defaultState: CardListState = {
 }
 
 export function CardReducer(state = defaultState, action: Action) {
-    console.log('state=' + JSON.stringify(state) + ' action=' + action);
     switch(action.type) {
         case CardActions.GET_CARDS : {
             return { ...state };

@@ -10,15 +10,23 @@ import * as CardReducer from './store/card/card.reducer';
 import { BoardEffects } from './store/board/board.effects';
 import { CardEffects } from './store/card/card.effects';
 import { ListEffects } from './store/list/list.effects';
+import { BoardsComponent } from './boards/boards.component';
+import { router } from './app.routing';
+import { HttpClientModule } from '@angular/common/http';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    BoardsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     StoreModule.forRoot({boards: BoardReducer.BoardReducer, lists: ListReducer.ListReducer, cards: CardReducer.CardReducer}),
     EffectsModule.forRoot([BoardEffects, CardEffects, ListEffects]),
+    router,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

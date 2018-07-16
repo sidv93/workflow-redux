@@ -13,10 +13,31 @@ const defaultState: BoardListState = {
 }
 
 export function BoardReducer(state = defaultState, action: Action) {
-    console.log('state-' + JSON.stringify(state) + ' action=' + action);
     switch(action.type) {
         case BoardActions.GET_BOARDS : {
-            return { ...state}
+            console.log('in get boards reducer');
+            return { ...state, loading: true }
+        }
+
+        case BoardActions.GET_BOARDS_SUCCESS: {
+            console.log('in get boards success reducer');
+            console.log('success state=' + JSON.stringify(action));
+            console.log('modified state-' + JSON.stringify(
+                {
+                    ...state,
+                    boards: [
+                        ...action.payload
+                    ],
+                    loading: false
+                }
+            ));
+            return {
+                ...state,
+                boards: [
+                    ...action.payload
+                ],
+                loading: false
+            }
         }
     }
 }

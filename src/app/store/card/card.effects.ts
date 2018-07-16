@@ -13,8 +13,10 @@ export class CardEffects {
     @Effect()
     GetCards$: Observable<Action> = this.action$
         .ofType<CardActions.GetCards>(CardActions.GET_CARDS)
-        .switchMap(action => {
-            console.log('in card effects');
-            return action;
-        });    
+        .pipe(
+            switchMap(action => {
+                console.log('in card effects =' + JSON.stringify(action));
+                return new Observable<Action>();
+            }) 
+        );
 }
