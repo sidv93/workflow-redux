@@ -15,13 +15,11 @@ export class BoardEffects {
     GetBoards$: Observable<Action> = this.action$
         .ofType<BoardActions.GetBoards>(BoardActions.GET_BOARDS)
         .pipe(
-            debounceTime(3000),
+            debounceTime(2000),
             switchMap(action => {
-            console.log('in board effects= ' + JSON.stringify(action));
-            return this.http.get('http://localhost:3000/api/v1/boards/asteria')
+            return this.http.get('http://localhost:3000/api/v1/boards/Sid')
             .pipe(
                 map((res: Response) => {
-                    console.log('response-' + JSON.stringify(res['data']));
                     return new BoardActions.GetBoardsSuccess(res['data'] as BoardState[]);
                 })
             )

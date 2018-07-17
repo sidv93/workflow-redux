@@ -21,16 +21,6 @@ export function BoardReducer(state = defaultState, action: Action) {
 
         case BoardActions.GET_BOARDS_SUCCESS: {
             console.log('in get boards success reducer');
-            console.log('success state=' + JSON.stringify(action));
-            console.log('modified state-' + JSON.stringify(
-                {
-                    ...state,
-                    boards: [
-                        ...action.payload
-                    ],
-                    loading: false
-                }
-            ));
             return {
                 ...state,
                 boards: [
