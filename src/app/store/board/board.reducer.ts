@@ -29,5 +29,9 @@ export function BoardReducer(state = defaultState, action: Action) {
                 loading: false
             }
         }
+        default: {
+            console.log('in default reducer');
+            return state;
+        }
     }
 }
