@@ -4,8 +4,8 @@
 <section class="dashboard-home">
   <div class="container">
     <div *ngIf="(boardState$ | async) as boards">
-      <div class="card-wrapper">
-        <div class="card-mini" *ngFor="let board of boards.boards">
+      <div class="card-wrapper" *ngIf="!boards.loading">
+        <div class="card-mini" (click)="router.navigate(['board', board.boardId, board.boardName])" *ngFor="let board of boards.boards">
           <div class="card-mini-header">
             <span class="date">{{board.date | date:'mediumDate'}}</span>
             <span class="color-picker-wrap">
@@ -30,7 +30,7 @@
     </div>
     
   </div>
-  <a class="add">
+  <a class="add" (click)="addBoard()">
     <span> &#43; </span>
   </a>
 </section>

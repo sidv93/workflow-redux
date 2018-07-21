@@ -16,7 +16,7 @@ export class ListEffects {
         .ofType<ListActions.GetLists>(ListActions.GET_LISTS)
         .pipe(
             switchMap(action => {
-                return this.http.get('http://localhost:3000/api/v1/lists/2').pipe(
+                return this.http.get('http://localhost:3000/api/v1/lists/' + action.payload.boardId).pipe(
                     map((res: Response) => {
                         return new ListActions.GetListsSuccess(res['data'] as ListState[]);
                     })
@@ -26,4 +26,23 @@ export class ListEffects {
                 () => of(new ListActions.GetListsError())
             )
         );
+    
+    @Effect()
+    CreateList$: Observable<Action> = this.action$
+        .ofType<ListActions.CreateList>(ListActions.CREATE_LIST)
+        .pipe(
+            switchMap(action => {
+                return this.http.post('http://localhost:3000/api/v1/list/', action.payload)
+                .pipe(
+                    map(
+                        (res: Response) => {
+                            return new ListActions.CreateListSuccess();
+                        }
+                    )
+                )
+            }),
+            catchError(
+                () => of(new ListActions.CreateListError())
+            )
+        )
 }

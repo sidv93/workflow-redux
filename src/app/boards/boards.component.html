@@ -1,24 +1,26 @@
-<header class="dashboard-header">
-	<h3 class="main-heading">{{globalService.boardName}}</h3>
-</header>
-<section class="dashboard-home">
-	<!-- <div class="container" *ngIf="lists.length > 0">
-		<div class="card-cover">
-			<a class="close-btn" (click)="deleteBoard()">
-				<i class="fa fa-times" aria-hidden="true"></i>
-			</a>
-			<ng-container *ngFor="let list of lists">
-				<app-list [list]="list"></app-list>
-			</ng-container>
+<ng-container *ngIf="(listState$ | async) as lists">
+	<header class="dashboard-header">
+		<h3 class="main-heading">{{lists.boardName}}</h3>
+	</header>
+	<section class="dashboard-home">
+		<div class="container" *ngIf="lists.lists.length">
+			<div class="card-cover">
+				<a class="close-btn" (click)="deleteBoard()">
+					<i class="fa fa-times" aria-hidden="true"></i>
+				</a>
+				<ng-container *ngFor="let list of lists.lists">
+					<app-lists [list]="list"></app-lists>
+				</ng-container>
+			</div>
 		</div>
-	</div>
-	<div class="container" *ngIf="!lists.length">
-		<p style="text-align: center;">You haven't added any lists.</p>
-	</div> -->
-	<a class="add" (click)="addList()">
-		<span> &#43; </span>
-	</a>
-</section>
-<footer class="copyrights">
-	<span>Copyright © 2017 Asteria Aerospace | All Rights Reserved.</span>
-</footer>
+		<div class="container" *ngIf="lists.loading">
+			<p style="text-align: center;">You haven't added any lists.</p>
+		</div>
+		<a class="add" (click)="addList()">
+			<span> &#43; </span>
+		</a>
+	</section>
+	<footer class="copyrights">
+		<span>Copyright © 2017 Asteria Aerospace | All Rights Reserved.</span>
+	</footer>
+</ng-container>

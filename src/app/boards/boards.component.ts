@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BoardState, BoardListState } from '../store/board/board.state';
-import * as BoardActions from '../store/board/board.action';
+import * as ListActions from '../store/list/list.action';
 import { Observable } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { ListState, ListsState } from '../store/list/list.state';
 
 @Component({
   selector: 'app-boards',
@@ -11,16 +12,35 @@ import { Observable } from 'rxjs';
 })
 export class BoardsComponent implements OnInit {
 
-  boardState$: Observable<BoardState[]>;
+  listState$: Observable<ListState[]>;
 
-  constructor(private store: Store<BoardListState>) { }
+  constructor(private store: Store<ListsState>, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    
+    console.log('in board component');
+    let boardId = this.route.snapshot.paramMap.get('boardId');
+    let boardName = this.route.snapshot.paramMap.get('boardName');
+    this.listState$ = this.store.select(store => store.lists);
+    this.store.dispatch(new ListActions.GetLists({ boardId: boardId, boardName: boardName }));
+    // this.listState$.subscribe(
+    //   data => {
+    //     console.log('lists data-' + JSON.stringify(data));
+    //   }
+    // )
   }
 
   public addList() {
-    
+    console.log('in add list');
+    let listName = prompt('Enter List name');
+    if (listName) {
+      this.store.dispatch(new ListActions.CreateList({
+        boardId: this.route.snapshot.paramMap.get('boardId'),
+        listName: listName
+      }));
+    }
   }
 
+  public deleteBoard() {
+    console.log('in delete board');
+  }
 }

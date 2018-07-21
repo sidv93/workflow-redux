@@ -8,6 +8,7 @@ export const GET_CARDS_ERROR = '[Card] GET_CARDS_ERROR';
 
 export class GetCards implements Action {
     readonly type = GET_CARDS;
+    constructor(public payload: string) {}
 }
 
 export class GetCardsSuccess implements Action {

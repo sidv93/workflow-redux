@@ -16,7 +16,7 @@ export class CardEffects {
         .ofType<CardActions.GetCards>(CardActions.GET_CARDS)
         .pipe(
             switchMap(action => {
-                return this.http.get('http://localhost:3000/api/v1/cards/1').pipe(
+                return this.http.get('http://localhost:3000/api/v1/cards/' + action.payload).pipe(
                     map((res: Response) => {
                         return new CardActions.GetCardsSuccess(res['data'] as CardState[]); 
                     })

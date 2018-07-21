@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -30,7 +30,8 @@ import { ListsComponent } from './lists/lists.component';
     StoreModule.forRoot({boards: BoardReducer.BoardReducer, lists: ListReducer.ListReducer, cards: CardReducer.CardReducer}),
     EffectsModule.forRoot([BoardEffects, CardEffects, ListEffects]),
     router,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

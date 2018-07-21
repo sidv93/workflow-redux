@@ -18,7 +18,6 @@ export function BoardReducer(state = defaultState, action: Action) {
             console.log('in get boards reducer');
             return { ...state, loading: true }
         }
-
         case BoardActions.GET_BOARDS_SUCCESS: {
             console.log('in get boards success reducer');
             return {
@@ -29,8 +28,17 @@ export function BoardReducer(state = defaultState, action: Action) {
                 loading: false
             }
         }
+        case BoardActions.CREATE_BOARD : {
+            console.log('in create board reducer');
+            console.log('board payload=' + action.payload);
+        }
+
+        case BoardActions.CREATE_BOARD_SUCCESS : {
+            console.log('in create board success reducer');
+        }
+
         default: {
-            console.log('in default reducer');
+            console.log('in default board reducer');
             return state;
         }
     }

@@ -16,6 +16,7 @@ export function CardReducer(state = defaultState, action: Action) {
     switch (action.type) {
         case CardActions.GET_CARDS: {
             console.log('in get cards reducer');
+            console.log('get cards payload=' + action.payload);
             return { ...state, loading: true };
         }
         case CardActions.GET_CARDS_SUCCESS: {

@@ -27,4 +27,22 @@ export class BoardEffects {
             catchError(
                 () => of(new BoardActions.GetBoardsError())
             ));
+    
+    @Effect()
+    CreateBoard$: Observable<Action> = this.action$
+        .ofType<BoardActions.CreateBoard>(BoardActions.CREATE_BOARD)
+        .pipe(
+            switchMap(action => {
+                return this.http.post('http://localhost:3000/api/v1/board',{ user: 'asteria', boardName: action.payload})
+                    .pipe(
+                        map((res: Response) => {
+                            console.log('create response=' + JSON.stringify(res));
+                            return new BoardActions.GetBoards();
+                        })
+                    )
+            }),
+            catchError(
+                () => of(new BoardActions.CreateBoardError)
+            )
+        )
 }
