@@ -13,9 +13,33 @@ const defaultState: CardListState = {
 }
 
 export function CardReducer(state = defaultState, action: Action) {
-    switch(action.type) {
-        case CardActions.GET_CARDS : {
-            return { ...state };
+    switch (action.type) {
+        case CardActions.GET_CARDS: {
+            console.log('in get cards reducer');
+            return { ...state, loading: true };
+        }
+        case CardActions.GET_CARDS_SUCCESS: {
+            console.log('in get cards success reducer');
+            console.log('state-' + JSON.stringify(
+                {
+                    ...state,
+                    cards: [
+                        ...action.payload
+                    ],
+                    loading: false
+                }
+            ))
+            return {
+                ...state,
+                cards: [
+                    ...action.payload
+                ],
+                loading: false
+            }
+        }
+        default: {
+            console.log('in default card reducer');
+            return state;
         }
     }
 }

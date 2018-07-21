@@ -17,7 +17,7 @@ export class BoardEffects {
         .pipe(
             // debounceTime(2000),
             switchMap(action => {
-                return this.http.get('http://localhost:3000/api/v1/boards/Sid')
+                return this.http.get('http://localhost:3000/api/v1/boards/asteria')
                     .pipe(
                         map((res: Response) => {
                             return new BoardActions.GetBoardsSuccess(res['data'] as BoardState[]);

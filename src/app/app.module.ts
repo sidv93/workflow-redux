@@ -14,12 +14,16 @@ import { BoardsComponent } from './boards/boards.component';
 import { router } from './app.routing';
 import { HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { CardsComponent } from './cards/cards.component';
+import { ListsComponent } from './lists/lists.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BoardsComponent,
-    DashboardComponent
+    DashboardComponent,
+    CardsComponent,
+    ListsComponent
   ],
   imports: [
     BrowserModule,

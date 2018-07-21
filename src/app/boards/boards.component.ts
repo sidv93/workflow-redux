@@ -16,13 +16,11 @@ export class BoardsComponent implements OnInit {
   constructor(private store: Store<BoardListState>) { }
 
   ngOnInit() {
-    this.boardState$ = this.store.select(state => state.boards);
-    this.store.dispatch(new BoardActions.GetBoards());
-    this.boardState$.subscribe(
-      data => {
-        console.log('board state data-' + JSON.stringify(data));
-      }
-    )
+    
+  }
+
+  public addList() {
+    
   }
 
 }
