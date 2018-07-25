@@ -29,10 +29,6 @@ export class DashboardComponent implements OnInit {
     // )
   }
 
-  public navigateToBoard() {
-    console.log('in nav function');
-  }
-
   public addBoard() {
     let boardName = prompt('Enter board name');
     if (boardName) {

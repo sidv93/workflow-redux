@@ -30,6 +30,7 @@ export class CreateBoard implements Action {
 
 export class CreateBoardSuccess implements Action {
     readonly type = CREATE_BOARD_SUCCESS;
+    constructor(public payload: any) {}
 }
 
 export class CreateBoardError implements Action {

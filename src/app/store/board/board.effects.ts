@@ -37,7 +37,7 @@ export class BoardEffects {
                     .pipe(
                         map((res: Response) => {
                             console.log('create response=' + JSON.stringify(res));
-                            return new BoardActions.GetBoards();
+                            return new BoardActions.CreateBoardSuccess([{ user: 'asteria', boardName: action.payload}] as BoardState[]);
                         })
                     )
             }),

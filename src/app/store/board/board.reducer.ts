@@ -5,7 +5,7 @@ import * as BoardActions from './board.action';
 export type Action = BoardActions.BoardActions;
 
 const defaultBoardState: BoardState[] = [
-    
+
 ]
 
 const defaultState: BoardListState = {
@@ -13,8 +13,8 @@ const defaultState: BoardListState = {
 }
 
 export function BoardReducer(state = defaultState, action: Action) {
-    switch(action.type) {
-        case BoardActions.GET_BOARDS : {
+    switch (action.type) {
+        case BoardActions.GET_BOARDS: {
             console.log('in get boards reducer');
             return { ...state, loading: true }
         }
@@ -28,13 +28,35 @@ export function BoardReducer(state = defaultState, action: Action) {
                 loading: false
             }
         }
-        case BoardActions.CREATE_BOARD : {
+        case BoardActions.CREATE_BOARD: {
             console.log('in create board reducer');
             console.log('board payload=' + action.payload);
+            console.log('state during creating board=' + JSON.stringify(state));
+            return state;
         }
 
-        case BoardActions.CREATE_BOARD_SUCCESS : {
+        case BoardActions.CREATE_BOARD_SUCCESS: {
             console.log('in create board success reducer');
+            console.log('state before success=' + JSON.stringify(state));
+            console.log('payload=' + JSON.stringify(action.payload));
+            console.log('state after success=' + JSON.stringify(
+                {
+                    ...state,
+                    boards: [
+                        ...state.boards,
+                        ...action.payload
+                    ],
+                    loading: false
+                }
+            ));
+            return {
+                ...state,
+                boards: [
+                    ...state.boards,
+                    ...action.payload
+                ],
+                loading: false
+            }
         }
 
         default: {
