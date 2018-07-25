@@ -30,6 +30,7 @@ export class CreateList implements Action {
 
 export class CreateListSuccess implements Action {
     readonly type = CREATE_LIST_SUCCESS;
+    constructor(public payload: any) {}
 }
 
 export class CreateListError implements Action {

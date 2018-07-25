@@ -22,11 +22,6 @@ export class BoardsComponent implements OnInit {
     let boardName = this.route.snapshot.paramMap.get('boardName');
     this.listState$ = this.store.select(store => store.lists);
     this.store.dispatch(new ListActions.GetLists({ boardId: boardId, boardName: boardName }));
-    // this.listState$.subscribe(
-    //   data => {
-    //     console.log('lists data-' + JSON.stringify(data));
-    //   }
-    // )
   }
 
   public addList() {

@@ -33,11 +33,11 @@ export class BoardEffects {
         .ofType<BoardActions.CreateBoard>(BoardActions.CREATE_BOARD)
         .pipe(
             switchMap(action => {
+                console.log('making api call-' + action.payload);
                 return this.http.post('http://localhost:3000/api/v1/board',{ user: 'asteria', boardName: action.payload})
                     .pipe(
                         map((res: Response) => {
-                            console.log('create response=' + JSON.stringify(res));
-                            return new BoardActions.CreateBoardSuccess([{ user: 'asteria', boardName: action.payload}] as BoardState[]);
+                            return new BoardActions.CreateBoardSuccess(new Array(res['data']) as BoardState[]);
                         })
                     )
             }),

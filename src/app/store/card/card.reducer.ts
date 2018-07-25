@@ -38,6 +38,21 @@ export function CardReducer(state = defaultState, action: Action) {
                 loading: false
             }
         }
+        case CardActions.CREATE_CARD : {
+            console.log('in create card reducer');
+            return state;
+        }
+        case CardActions.CREATE_CARD_SUCCESS : {
+            console.log('in create success reducer');
+            return {
+                ...state,
+                cards: [
+                    ...state.cards,
+                    ...action.payload
+                ],
+                loading: false
+            }
+        }
         default: {
             console.log('in default card reducer');
             return state;

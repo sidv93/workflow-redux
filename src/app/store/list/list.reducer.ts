@@ -41,9 +41,18 @@ export function ListReducer(state = defaultState, action: Action) {
         case ListActions.CREATE_LIST : {
             console.log('in create list reducer');
             console.log('list payload=' + JSON.stringify(action.payload));
+            return state;
         }
         case ListActions.CREATE_LIST_SUCCESS : {
             console.log('in create list success reducer');
+            return {
+                ...state,
+                lists: [
+                    ...state.lists,
+                    ...action.payload
+                ],
+                loading: false
+            };
         }
         default: {
             return state;

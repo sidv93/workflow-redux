@@ -26,4 +26,21 @@ export class CardEffects {
                 () => of(new CardActions.GetCardsError())
             )
         );
+    
+    @Effect()
+    CreateCard$: Observable<Action> = this.action$
+        .ofType<CardActions.CreateCard>(CardActions.CREATE_CARD)
+        .pipe(
+            switchMap(action => {
+                return this.http.post('http://localhost:3000/api/v1/card', action.payload).pipe(
+                    map((res: Response) => {
+                        console.log('create card response=' + JSON.stringify(res));
+                        return new CardActions.CreateCardSuccess(new Array(res['data']) as CardState[]);
+                    })
+                )
+            }),
+            catchError(
+                () => of(new CardActions.CreateCardError())
+            )
+        )
 }

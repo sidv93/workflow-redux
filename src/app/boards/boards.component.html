@@ -13,7 +13,7 @@
 				</ng-container>
 			</div>
 		</div>
-		<div class="container" *ngIf="lists.loading">
+		<div class="container" *ngIf="!lists.lists.length">
 			<p style="text-align: center;">You haven't added any lists.</p>
 		</div>
 		<a class="add" (click)="addList()">

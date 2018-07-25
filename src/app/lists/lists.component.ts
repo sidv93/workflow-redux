@@ -21,4 +21,16 @@ export class ListsComponent implements OnInit {
     this.store.dispatch(new CardActions.GetCards(this.list.listId));
   }
 
+  public addCard() {
+    let cardData = prompt('Enter card data');
+    if (cardData) {
+      this.store.dispatch(new CardActions.CreateCard(
+        {
+          listId: this.list.listId,
+          cardData: cardData
+        }
+      ));
+    }
+  }
+
 }

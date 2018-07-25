@@ -36,7 +36,8 @@ export class ListEffects {
                 .pipe(
                     map(
                         (res: Response) => {
-                            return new ListActions.CreateListSuccess();
+                            console.log('list respnse-' + JSON.stringify(res));
+                            return new ListActions.CreateListSuccess(new Array(res['data']) as ListState[]);
                         }
                     )
                 )
