@@ -22,11 +22,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.boardState$ = this.store.select(store => store.boards);
     this.store.dispatch(new BoardActions.GetBoards());
-    // this.boardState$.subscribe(
-    //   data => {
-    //     console.log('data-' + JSON.stringify(data));
-    //   }
-    // )
   }
 
   public addBoard() {
