@@ -15,35 +15,9 @@ const defaultState: CardListState = {
 export function CardReducer(state = defaultState, action: Action) {
     switch (action.type) {
         case CardActions.GET_CARDS: {
-            console.log('in get cards reducer');
-            console.log('get cards payload=' + action.payload);
             return { ...state, loading: true };
         }
         case CardActions.GET_CARDS_SUCCESS: {
-            console.log('in get cards success reducer');
-            console.log('state-' + JSON.stringify(
-                {
-                    ...state,
-                    cards: [
-                        ...action.payload
-                    ],
-                    loading: false
-                }
-            ))
-            return {
-                ...state,
-                cards: [
-                    ...action.payload
-                ],
-                loading: false
-            }
-        }
-        case CardActions.CREATE_CARD : {
-            console.log('in create card reducer');
-            return state;
-        }
-        case CardActions.CREATE_CARD_SUCCESS : {
-            console.log('in create success reducer');
             return {
                 ...state,
                 cards: [
@@ -53,8 +27,32 @@ export function CardReducer(state = defaultState, action: Action) {
                 loading: false
             }
         }
+        case CardActions.CREATE_CARD: {
+            return state;
+        }
+        case CardActions.CREATE_CARD_SUCCESS: {
+            return {
+                ...state,
+                cards: [
+                    ...state.cards,
+                    ...action.payload
+                ],
+                loading: false
+            }
+        }
+        case CardActions.DELETE_CARD: {
+            return state;
+        }
+        case CardActions.DELETE_CARD_SUCCESS: {
+            return {
+                ...state,
+                cards: [
+                    ...state.cards
+                ].filter(item => item.cardId !== action.payload),
+                loading: false
+            };
+        }
         default: {
-            console.log('in default card reducer');
             return state;
         }
     }

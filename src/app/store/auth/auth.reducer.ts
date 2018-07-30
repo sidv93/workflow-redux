@@ -11,7 +11,6 @@ const defaultState = {
 export function AuthReducer(state = defaultState, action: Action) {
     switch (action.type) {
         case AuthActions.AUTHENTICATE: {
-            console.log('in authenticate reducer');
             return {
                 ...state,
                 username: action.payload.userId,
@@ -19,14 +18,12 @@ export function AuthReducer(state = defaultState, action: Action) {
             };
         }
         case AuthActions.AUTH_SUCCESS: {
-            console.log('in auth success reducer');
             return {
                 ...state,
                 loggedIn: true
             }
         }
         default: {
-            console.log('in auth defualt reducer');
             return state;
         }
     }

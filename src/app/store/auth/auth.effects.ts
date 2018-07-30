@@ -17,11 +17,9 @@ export class AuthEffects {
         .ofType<AuthActions.Authenticate>(AuthActions.AUTHENTICATE)
         .pipe(
             switchMap(action => {
-                console.log('payload-' + JSON.stringify(action.payload));
                 return this.http.post('http://localhost:3000/api/v1/user/login/', action.payload)
                     .pipe(
                         map((res: Response) => {
-                            console.log('auth response=' + JSON.stringify(res));
                             return new AuthActions.AuthSucess(res['data'] as AuthState)
                         })
                     )
@@ -36,7 +34,6 @@ export class AuthEffects {
         .ofType<AuthActions.AuthSucess>(AuthActions.AUTH_SUCCESS)
         .pipe(
             tap((user) => {
-                console.log('in routing auth success effect');
                 this.router.navigate(['dashboard']);
             })
         );

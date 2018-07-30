@@ -19,6 +19,7 @@ import { ListsComponent } from './lists/lists.component';
 import { LoginComponent } from './login/login.component';
 import { AuthReducer } from './store/auth/auth.reducer';
 import { AuthEffects } from './store/auth/auth.effects';
+import { CardFiler } from './cards/cardFilter';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AuthEffects } from './store/auth/auth.effects';
     DashboardComponent,
     CardsComponent,
     ListsComponent,
-    LoginComponent
+    LoginComponent,
+    CardFiler
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as ListActions from '../store/list/list.action';
+import * as BoardActions from '../store/board/board.action';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ListState, ListsState } from '../store/list/list.state';
+import { BoardListState, BoardState } from '../store/board/board.state';
 
 @Component({
   selector: 'app-boards',
@@ -13,29 +15,40 @@ import { ListState, ListsState } from '../store/list/list.state';
 export class BoardsComponent implements OnInit {
 
   listState$: Observable<ListState[]>;
+  boardState$: Observable<BoardState[]>;
+  @Input() addCard;
 
-  constructor(private store: Store<ListsState>, private route: ActivatedRoute) { }
+  constructor(private listStore: Store<ListsState>, 
+    private boardStore: Store<BoardListState>,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
-    console.log('in board component');
     let boardId = this.route.snapshot.paramMap.get('boardId');
     let boardName = this.route.snapshot.paramMap.get('boardName');
-    this.listState$ = this.store.select(store => store.lists);
-    this.store.dispatch(new ListActions.GetLists({ boardId: boardId, boardName: boardName }));
+    this.boardState$ = this.boardStore.select(store => store.boards);
+    this.listState$ = this.listStore.select(store => store.lists);
+    this.listStore.dispatch(new ListActions.GetLists({ boardId: boardId, boardName: boardName }));
   }
 
   public addList() {
-    console.log('in add list');
     let listName = prompt('Enter List name');
     if (listName) {
-      this.store.dispatch(new ListActions.CreateList({
+      this.listStore.dispatch(new ListActions.CreateList({
         boardId: this.route.snapshot.paramMap.get('boardId'),
         listName: listName
       }));
     }
   }
 
+  public addCards (e: any) {
+    console.log('e=' + e);
+  }
+
   public deleteBoard() {
-    console.log('in delete board');
+    this.boardStore.dispatch(new BoardActions.DeleteBoard(
+      {
+        boardId: this.route.snapshot.paramMap.get('boardId')
+      }
+    ));
   }
 }

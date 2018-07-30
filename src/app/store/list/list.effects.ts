@@ -36,7 +36,6 @@ export class ListEffects {
                 .pipe(
                     map(
                         (res: Response) => {
-                            console.log('list respnse-' + JSON.stringify(res));
                             return new ListActions.CreateListSuccess(new Array(res['data']) as ListState[]);
                         }
                     )
@@ -44,6 +43,23 @@ export class ListEffects {
             }),
             catchError(
                 () => of(new ListActions.CreateListError())
+            )
+        )
+
+    @Effect()
+    DeleteList$: Observable<Action> = this.action$
+        .ofType<ListActions.DeleteList>(ListActions.DELETE_LIST)
+        .pipe(
+            switchMap(action => {
+                return this.http.delete('http://localhost:3000/api/v1/list/' + action.payload.listId)
+                .pipe(
+                    map((res: Response) => {
+                        return new ListActions.DeleteListSuccess(action.payload.listId);
+                    })
+                )
+            }),
+            catchError(
+                () => of(new ListActions.DeleteListFailure())
             )
         )
 }

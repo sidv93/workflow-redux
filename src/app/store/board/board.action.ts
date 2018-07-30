@@ -8,6 +8,9 @@ export const GET_BOARDS_ERROR = '[Board] GET_BOARDS_ERROR';
 export const CREATE_BOARD = '[Board] CREATE_BOARD';
 export const CREATE_BOARD_SUCCESS = '[Board] CREATE_BOARD_SUCCESS';
 export const CREATE_BOARD_ERROR = '[Board] CREATE_BOARD_ERROR';
+export const DELETE_BOARD = '[Board] DELETE_BOARD';
+export const DELETE_BOARD_SUCCESS = '[Board] DELETE_BOARD_SUCCESS';
+export const DELETE_BOARD_FAILURE = '[Board] DELETE_BOARD_FAILURE';
 
 export class GetBoards implements Action {
     readonly type = GET_BOARDS;
@@ -37,5 +40,18 @@ export class CreateBoardError implements Action {
     readonly type = CREATE_BOARD_ERROR;
 }
 
+export class DeleteBoard implements Action {
+    readonly type = DELETE_BOARD;
+    constructor(public payload: any) { }
+}
+
+export class DeleteBoardSuccess implements Action {
+    readonly type = DELETE_BOARD_SUCCESS;
+}
+
+export class DeleteBoardFailure implements Action {
+    readonly type = DELETE_BOARD_FAILURE;
+}
+
 export type BoardActions = GetBoards | GetBoardsSuccess | GetBoardsError | CreateBoard | CreateBoardSuccess
-    | CreateBoardError;
+    | CreateBoardError | DeleteBoard | DeleteBoardSuccess | DeleteBoardFailure;

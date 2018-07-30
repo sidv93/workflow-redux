@@ -3,6 +3,8 @@ import { Store } from '../../../node_modules/@ngrx/store';
 import { CardListState, CardState } from '../store/card/card.state';
 import { Observable } from '../../../node_modules/rxjs';
 import * as CardActions from '../store/card/card.action';
+import * as ListActions from '../store/list/list.action';
+import { ListsState, ListState } from '../store/list/list.state';
 
 @Component({
   selector: 'app-lists',
@@ -13,24 +15,38 @@ export class ListsComponent implements OnInit {
 
   @Input() list;
   public cardState$: Observable<CardState[]>;
-  constructor(private store: Store<CardListState>) { }
+  public listsState$: Observable<ListState[]>;
+  constructor(private cardStore: Store<CardListState>,
+    private listStore: Store<ListsState>) { }
 
   ngOnInit() {
-    console.log('lists received =' + JSON.stringify(this.list));
-    this.cardState$ = this.store.select(store => store.cards);
-    this.store.dispatch(new CardActions.GetCards(this.list.listId));
+    this.cardState$ = this.cardStore.select(store => store.cards);
+    this.cardStore.dispatch(new CardActions.GetCards(this.list.listId));
+    this.listsState$ = this.listStore.select(store => store.lists);
   }
 
-  public addCard() {
+  public addCards() {
     let cardData = prompt('Enter card data');
     if (cardData) {
-      this.store.dispatch(new CardActions.CreateCard(
+      this.cardStore.dispatch(new CardActions.CreateCard(
         {
           listId: this.list.listId,
           cardData: cardData
         }
       ));
     }
+  }
+
+  public deleteList() {
+    this.listStore.dispatch(new ListActions.DeleteList({
+      listId: this.list.listId
+    }));
+  }
+
+  public deleteCard(e: any) {
+    this.cardStore.dispatch(new CardActions.DeleteCard({
+      cardId: e
+    }))
   }
 
 }

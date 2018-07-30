@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+
 
 @Component({
   selector: 'app-cards',
@@ -9,21 +10,21 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 export class CardsComponent implements OnInit {
 
   @Input() card;
+  @Output() deleteCard = new EventEmitter<any>();
   public cardData;
   public showOptionsFlag: boolean= false;
 
   constructor() { }
 
   ngOnInit() {
-    console.log('cards recieved=' + JSON.stringify(this.card));
     this.cardData = this.card.cardData;
   }
 
   public updateCard() {
 
   }
-  public deleteCard() {
-
+  public deleteCards() {
+    this.deleteCard.emit(this.card.cardId);
   }
 
   public showOptions() {

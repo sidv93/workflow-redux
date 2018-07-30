@@ -15,21 +15,9 @@ const defaultState: ListsState = {
 export function ListReducer(state = defaultState, action: Action) {
     switch (action.type) {
         case ListActions.GET_LISTS: {
-            console.log('in get lists reducer');
-            console.log('payload=' + JSON.stringify(action.payload));
             return { ...state, boardId: action.payload.boardId, boardName: action.payload.boardName };
         }
         case ListActions.GET_LISTS_SUCCESS: {
-            console.log('in get lists success reducer');
-            console.log('lists-' + JSON.stringify(
-                {
-                    ...state,
-                    lists: [
-                        ...action.payload
-                    ],
-                    loading: false
-                }
-            ));
             return {
                 ...state,
                 lists: [
@@ -39,18 +27,25 @@ export function ListReducer(state = defaultState, action: Action) {
             }
         }
         case ListActions.CREATE_LIST : {
-            console.log('in create list reducer');
-            console.log('list payload=' + JSON.stringify(action.payload));
             return state;
         }
         case ListActions.CREATE_LIST_SUCCESS : {
-            console.log('in create list success reducer');
             return {
                 ...state,
                 lists: [
                     ...state.lists,
                     ...action.payload
                 ],
+                loading: false
+            };
+        }
+        case ListActions.DELETE_LIST: {
+            return state;
+        }
+        case ListActions.DELETE_LIST_SUCCESS: {
+            return {
+                ...state,
+                lists: [...state.lists].filter(item => item.listId !== action.payload),
                 loading: false
             };
         }

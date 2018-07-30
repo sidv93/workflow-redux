@@ -15,11 +15,9 @@ const defaultState: BoardListState = {
 export function BoardReducer(state = defaultState, action: Action) {
     switch (action.type) {
         case BoardActions.GET_BOARDS: {
-            console.log('in get boards reducer');
             return { ...state, loading: true }
         }
         case BoardActions.GET_BOARDS_SUCCESS: {
-            console.log('in get boards success reducer');
             return {
                 ...state,
                 boards: [
@@ -29,12 +27,10 @@ export function BoardReducer(state = defaultState, action: Action) {
             }
         }
         case BoardActions.CREATE_BOARD: {
-            console.log('in create board reducer');
             return state;
         }
 
         case BoardActions.CREATE_BOARD_SUCCESS: {
-            console.log('in create board success reducer');
             return {
                 ...state,
                 boards: [
@@ -45,8 +41,15 @@ export function BoardReducer(state = defaultState, action: Action) {
             }
         }
 
+        case BoardActions.DELETE_BOARD: {
+            return state;
+        }
+
+        case BoardActions.DELETE_BOARD_SUCCESS: {
+            return state;
+        }
+
         default: {
-            console.log('in default board reducer');
             return state;
         }
     }
