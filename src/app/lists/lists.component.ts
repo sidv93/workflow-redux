@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { Store } from '../../../node_modules/@ngrx/store';
 import { CardListState, CardState } from '../store/card/card.state';
 import { Observable } from '../../../node_modules/rxjs';
@@ -17,7 +17,7 @@ export class ListsComponent implements OnInit {
   public cardState$: Observable<CardState[]>;
   public listsState$: Observable<ListState[]>;
   constructor(private cardStore: Store<CardListState>,
-    private listStore: Store<ListsState>) { }
+    private listStore: Store<ListsState>, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.cardState$ = this.cardStore.select(store => store.cards);

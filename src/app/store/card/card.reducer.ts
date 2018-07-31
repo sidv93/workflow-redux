@@ -1,6 +1,7 @@
 import { Card } from '../../models/Card';
 import { CardState, CardListState } from './card.state';
 import * as CardActions from './card.action';
+import { isNgTemplate } from '../../../../node_modules/@angular/compiler';
 
 export type Action = CardActions.CardActions;
 
@@ -23,7 +24,7 @@ export function CardReducer(state = defaultState, action: Action) {
                 cards: [
                     ...state.cards,
                     ...action.payload
-                ],
+                ].filter((item, index, self) => self.findIndex(value => value.cardId === item.cardId) === index),
                 loading: false
             }
         }
