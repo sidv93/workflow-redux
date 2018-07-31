@@ -1,4 +1,3 @@
-import { AuthState } from './auth.state';
 import * as AuthActions from './auth.actions';
 
 export type Action = AuthActions.AuthActions;

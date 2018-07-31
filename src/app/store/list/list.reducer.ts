@@ -1,4 +1,3 @@
-import { List } from '../../models/List';
 import { ListState, ListsState } from './list.state';
 import * as ListActions from './list.action';
 

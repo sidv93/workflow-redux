@@ -1,7 +1,5 @@
-import { Card } from '../../models/Card';
 import { CardState, CardListState } from './card.state';
 import * as CardActions from './card.action';
-import { isNgTemplate } from '../../../../node_modules/@angular/compiler';
 
 export type Action = CardActions.CardActions;
 

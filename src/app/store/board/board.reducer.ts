@@ -1,4 +1,3 @@
-import { Board } from '../../models/Board';
 import { BoardState, BoardListState } from './board.state';
 import * as BoardActions from './board.action';
 
