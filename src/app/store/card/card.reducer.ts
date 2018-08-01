@@ -59,7 +59,12 @@ export function CardReducer(state = defaultState, action: Action) {
                 ...state,
                 cards: [
                     ...state.cards
-                ].map(item => item.cardId === action.payload.cardId ? item.cardData = action.payload.cardData : null),
+                ].map(item => {
+                    if(item.cardId === action.payload.cardId) {
+                        item.cardData = action.payload.cardData;
+                    }
+                    return item;
+                }),
                 loading: false
             };
         }

@@ -30,4 +30,10 @@ export class DashboardComponent implements OnInit {
       this.store.dispatch(new BoardActions.CreateBoard(boardName));
     }
   }
+
+  public deleteBoard(boardId:string) {
+    this.store.dispatch(new BoardActions.DeleteBoard({
+      boardId: boardId
+    }));
+  }
 }

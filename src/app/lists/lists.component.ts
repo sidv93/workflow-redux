@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectorRef, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '../../../node_modules/@ngrx/store';
 import { CardListState, CardState } from '../store/card/card.state';
 import { Observable } from '../../../node_modules/rxjs';
@@ -9,7 +9,8 @@ import { ListsState, ListState } from '../store/list/list.state';
 @Component({
   selector: 'app-lists',
   templateUrl: './lists.component.html',
-  styleUrls: ['./lists.component.css']
+  styleUrls: ['./lists.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListsComponent implements OnInit {
 
@@ -50,7 +51,6 @@ export class ListsComponent implements OnInit {
   }
 
   public updateCards(e: any) {
-    console.log('e=' + JSON.stringify(e));
     this.cardStore.dispatch(new CardActions.UpdateCard(
       {
         cardId: e.cardId,

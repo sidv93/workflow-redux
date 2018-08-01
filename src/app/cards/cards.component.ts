@@ -26,9 +26,11 @@ export class CardsComponent implements OnInit {
       cardData: this.cardData,
       cardId: this.card.cardId
     });
+    this.showOptionsFlag = false;
   }
   public deleteCards() {
     this.deleteCard.emit(this.card.cardId);
+    this.showOptionsFlag = false;
   }
 
   public showOptions() {
