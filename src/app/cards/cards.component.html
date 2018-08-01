@@ -1,7 +1,11 @@
 <li>
   <input type="text" name="cardData" [(ngModel)]="cardData" (focus)="showOptions(options)">
   <span class="options" [ngClass]="{'show': showOptionsFlag}">
-      <span (click)="updateCard()"><i class="fa fa-check" aria-hidden="true"></i></span>
-    <span (click)="deleteCards()"><i class="fa fa-times" aria-hidden="true"></i></span>
+    <span (click)="updateCards()">
+      <i class="fa fa-check" aria-hidden="true"></i>
+    </span>
+    <span (click)="deleteCards()">
+      <i class="fa fa-times" aria-hidden="true"></i>
+    </span>
   </span>
 </li>

@@ -58,4 +58,20 @@ export class CardEffects {
                 () => of(new CardActions.DeleteCardFailure())
             )
         )
+
+    @Effect()
+    UpdateCard$: Observable<Action> = this.action$
+        .ofType<CardActions.UpdateCard>(CardActions.UPDATE_CARD)
+        .pipe(
+            switchMap(action =>  {
+                return this.http.put('http://localhost:3000/api/v1/card/' + action.payload.cardId, {cardData: action.payload.cardData}).pipe(
+                    map((res: Response) => {
+                        return new CardActions.UpdateCardSuccess(action.payload);
+                    })
+                )
+            }),
+            catchError(
+                () => of(new CardActions.UpdateCardFailure())
+            )
+        )
 }

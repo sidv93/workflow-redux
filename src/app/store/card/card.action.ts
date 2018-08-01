@@ -11,6 +11,9 @@ export const CREATE_CARD_ERROR = '[Card] CREATE_CARD_ERROR';
 export const DELETE_CARD = '[Card] DELETE_CARD';
 export const DELETE_CARD_SUCCESS = '[Card] DELETE_CARD_SUCCESS';
 export const DELETE_CARD_FAILURE = '[Card] DELETE_CARD_FAILURE';
+export const UPDATE_CARD = '[Card] UPDATE_CARD';
+export const UPDATE_CARD_SUCCESS = '[Card] UPDATE_CARD_SUCCESS';
+export const UPDATE_CARD_FAILURE = '[Card] UPDATE_CARD_FAILURE';
 
 export class GetCards implements Action {
     readonly type = GET_CARDS;
@@ -54,5 +57,19 @@ export class DeleteCardFailure implements Action {
     readonly type = DELETE_CARD_FAILURE;
 }
 
+export class UpdateCard implements Action {
+    readonly type = UPDATE_CARD;
+    constructor(public payload : any) {}
+}
+
+export class UpdateCardSuccess implements Action {
+    readonly type = UPDATE_CARD_SUCCESS;
+    constructor(public payload: any) {}
+}
+
+export class UpdateCardFailure implements Action {
+    readonly type = UPDATE_CARD_FAILURE;
+}
+
 export type CardActions = GetCards | GetCardsSuccess | GetCardsError | CreateCard | CreateCardSuccess | CreateCardError
-    | DeleteCard | DeleteCardSuccess | DeleteCardFailure;
+    | DeleteCard | DeleteCardSuccess | DeleteCardFailure | UpdateCard | UpdateCardSuccess | UpdateCardFailure;

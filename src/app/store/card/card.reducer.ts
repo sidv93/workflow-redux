@@ -51,6 +51,18 @@ export function CardReducer(state = defaultState, action: Action) {
                 loading: false
             };
         }
+        case CardActions.UPDATE_CARD: {
+            return state;
+        }
+        case CardActions.UPDATE_CARD_SUCCESS: {
+            return {
+                ...state,
+                cards: [
+                    ...state.cards
+                ].map(item => item.cardId === action.payload.cardId ? item.cardData = action.payload.cardData : null),
+                loading: false
+            };
+        }
         default: {
             return state;
         }

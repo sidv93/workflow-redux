@@ -11,8 +11,9 @@ export class CardsComponent implements OnInit {
 
   @Input() card;
   @Output() deleteCard = new EventEmitter<any>();
+  @Output() updateCard = new EventEmitter<any>();
   public cardData;
-  public showOptionsFlag: boolean= false;
+  public showOptionsFlag: boolean = false;
 
   constructor() { }
 
@@ -20,8 +21,11 @@ export class CardsComponent implements OnInit {
     this.cardData = this.card.cardData;
   }
 
-  public updateCard() {
-
+  public updateCards() {
+    this.updateCard.emit({
+      cardData: this.cardData,
+      cardId: this.card.cardId
+    });
   }
   public deleteCards() {
     this.deleteCard.emit(this.card.cardId);

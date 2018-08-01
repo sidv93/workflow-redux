@@ -49,4 +49,14 @@ export class ListsComponent implements OnInit {
     }))
   }
 
+  public updateCards(e: any) {
+    console.log('e=' + JSON.stringify(e));
+    this.cardStore.dispatch(new CardActions.UpdateCard(
+      {
+        cardId: e.cardId,
+        cardData: e.cardData
+      }
+    ))
+  }
+
 }

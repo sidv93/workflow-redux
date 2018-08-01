@@ -12,7 +12,7 @@
   <ul class="card-list">
     <ng-container *ngIf="(cardState$ | async | cardFilter: list.listId) as cards">
       <ng-container *ngFor="let card of cards">
-        <app-cards [card]="card" (deleteCard)="deleteCard($event)"></app-cards>
+        <app-cards [card]="card" (deleteCard)="deleteCard($event)" (updateCard)="updateCards($event)"></app-cards>
       </ng-container>
     </ng-container>
   </ul>
