@@ -7,10 +7,11 @@ import { Actions, Effect } from '@ngrx/effects';
 import * as BoardActions from './board.action';
 import { HttpClient } from '@angular/common/http';
 import { Location } from '../../../../node_modules/@angular/common';
+import { Apollo } from 'apollo-angular';
 
 @Injectable()
 export class BoardEffects {
-    constructor(private action$: Actions, private http: HttpClient, private location: Location) { }
+    constructor(private action$: Actions, private http: HttpClient, private location: Location, private apollo: Apollo) { }
 
     @Effect()
     GetBoards$: Observable<Action> = this.action$

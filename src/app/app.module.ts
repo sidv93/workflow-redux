@@ -20,6 +20,9 @@ import { LoginComponent } from './login/login.component';
 import { AuthReducer } from './store/auth/auth.reducer';
 import { AuthEffects } from './store/auth/auth.effects';
 import { CardFiler } from './cards/cardFilter';
+import { ApolloModule, Apollo } from 'apollo-angular';
+import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 @NgModule({
   declarations: [
@@ -33,14 +36,23 @@ import { CardFiler } from './cards/cardFilter';
   ],
   imports: [
     BrowserModule,
-    StoreModule.forRoot({boards: BoardReducer.BoardReducer, lists: ListReducer.ListReducer, cards: CardReducer.CardReducer, auth: AuthReducer}),
+    StoreModule.forRoot({ boards: BoardReducer.BoardReducer, lists: ListReducer.ListReducer, cards: CardReducer.CardReducer, auth: AuthReducer }),
     EffectsModule.forRoot([BoardEffects, CardEffects, ListEffects, AuthEffects]),
     router,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ApolloModule,
+    HttpLinkModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(apollo: Apollo, httpLink: HttpLink) {
+    apollo.create({
+      link: httpLink.create({ uri: '[URL]' }),
+      cache: new InMemoryCache()
+    });
+  }
+}
