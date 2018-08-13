@@ -6,26 +6,38 @@ import { Action } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import * as CardActions from './card.action';
 import { HttpClient } from '@angular/common/http';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
 
 @Injectable()
 export class CardEffects {
-    constructor(private action$: Actions, private http: HttpClient) { }
-
+    constructor(private action$: Actions, private http: HttpClient, private apollo: Apollo) { }
+    private getCardQuery = gql`
+        query cards($listId: String!) {
+            cards(listId: $listId) {
+                cardData
+                cardId
+                listId
+            }
+        }`;
     @Effect()
     GetCards$: Observable<Action> = this.action$
         .ofType<CardActions.GetCards>(CardActions.GET_CARDS)
         .pipe(
-            mergeMap(action => {
-                return this.http.get('http://localhost:3000/api/v1/cards/' + action.payload).pipe(
-                    map((res: Response) => {
-                        return new CardActions.GetCardsSuccess(res['data'] as CardState[]); 
-                    })
-                );
+            switchMap(action => {
+                return this.apollo.watchQuery({
+                    query: this.getCardQuery,
+                    variables : {
+                        "listId": action.payload
+                    }
+                }).valueChanges.pipe(map(res => {
+                    return new CardActions.GetCardsSuccess(res.data['cards']);
+                }))
             }),
             catchError(
                 () => of(new CardActions.GetCardsError())
             )
-        );
+        )
     
     @Effect()
     CreateCard$: Observable<Action> = this.action$

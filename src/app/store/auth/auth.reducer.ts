@@ -17,6 +17,7 @@ export function AuthReducer(state = defaultState, action: Action) {
             };
         }
         case AuthActions.AUTH_SUCCESS: {
+            console.log('in Auth success');
             return {
                 ...state,
                 loggedIn: true
