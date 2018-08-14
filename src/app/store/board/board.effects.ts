@@ -14,39 +14,34 @@ import gql from 'graphql-tag';
 export class BoardEffects {
     constructor(private action$: Actions, private http: HttpClient, private location: Location, private apollo: Apollo) { }
 
-    // @Effect()
-    // GetBoards$: Observable<Action> = this.action$
-    //     .ofType<BoardActions.GetBoards>(BoardActions.GET_BOARDS)
-    //     .pipe(
-    //         // debounceTime(2000),
-    //         switchMap(action => {
-    //             return this.http.get('http://localhost:3000/api/v1/boards/asteria')
-    //                 .pipe(
-    //                     map((res: Response) => {
-    //                         return new BoardActions.GetBoardsSuccess(res['data'] as BoardState[]);
-    //                     })
-    //                 )
-    //         }),
-    //         catchError(
-    //             () => of(new BoardActions.GetBoardsError())
-    //         ));
+    private getBoardsQuery = gql`
+                            query boards($user: String!) {
+                                boards(user: $user) {
+                                    boardName
+                                    boardId
+                                    user
+                                }
+                            }
+                        `;
+    private createBoardsMutation = gql`
+                            mutation createBoard($boardName: String!, $user: String!) {
+                                createBoard(boardName: $boardName, user: $user) {
+                                    boardName
+                                    boardId
+                                    user
+                                }
+                                
+                            }
+                            `;           
     @Effect()
     GetBoards$: Observable<Action> = this.action$
         .ofType<BoardActions.GetBoards>(BoardActions.GET_BOARDS)
         .pipe(
             switchMap(action => {
                 return this.apollo.watchQuery({
-                    query: gql`
-                        query boards($user: String!) {
-                            boards(user: $user) {
-                                boardName
-                                boardId
-                                user
-                            }
-                        }
-                    `,
+                    query: this.getBoardsQuery,
                     variables: {
-                        "user": 'asteria' 
+                        "user": 'Sid' 
                     }
                 }).valueChanges.pipe(
                     map(res => {
@@ -64,18 +59,22 @@ export class BoardEffects {
         .ofType<BoardActions.CreateBoard>(BoardActions.CREATE_BOARD)
         .pipe(
             switchMap(action => {
-                return this.http.post('http://localhost:3000/api/v1/board',{ user: 'asteria', boardName: action.payload})
-                    .pipe(
-                        map((res: Response) => {
-                            return new BoardActions.CreateBoardSuccess(new Array(res['data']) as BoardState[]);
-                        })
-                    )
+                return this.apollo.mutate({
+                    mutation: this.createBoardsMutation,
+                    variables: {
+                        "boardName": action.payload,
+                        "user": "Sid"
+                    }
+                }).pipe(map(res => {
+                    return new BoardActions.CreateBoardSuccess(res.data['createBoard']);
+                }
+            ))
             }),
             catchError(
                 () => of(new BoardActions.CreateBoardError())
             )
         )
-
+        
     @Effect()
     DeleteBoard$: Observable<Action> = this.action$
         .ofType<BoardActions.DeleteBoard>(BoardActions.DELETE_BOARD)

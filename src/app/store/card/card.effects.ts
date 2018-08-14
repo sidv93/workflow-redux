@@ -20,6 +20,16 @@ export class CardEffects {
                 listId
             }
         }`;
+    private createCardMutation = gql`
+        mutation createCard($cardData: String!, $listId: String!) {
+            createCard(cardData: $cardData, listId: $listId) {
+                cardId
+                cardData
+                listId
+            }
+        }
+    `;
+
     @Effect()
     GetCards$: Observable<Action> = this.action$
         .ofType<CardActions.GetCards>(CardActions.GET_CARDS)
@@ -44,9 +54,17 @@ export class CardEffects {
         .ofType<CardActions.CreateCard>(CardActions.CREATE_CARD)
         .pipe(
             switchMap(action => {
-                return this.http.post('http://localhost:3000/api/v1/card', action.payload).pipe(
-                    map((res: Response) => {
-                        return new CardActions.CreateCardSuccess(new Array(res['data']) as CardState[]);
+                console.log('create card payload-' + JSON.stringify(action.payload));
+                return this.apollo.mutate({
+                    mutation: this.createCardMutation,
+                    variables: {
+                        cardData: action.payload.cardData,
+                        listId: action.payload.listId
+                    }
+                }).pipe(
+                    map(res=> {
+                        console.log('create card res=' + JSON.stringify(res));
+                        return new CardActions.CreateCardSuccess(res.data['createCard']);
                     })
                 )
             }),

@@ -13,21 +13,24 @@ import gql from 'graphql-tag';
 export class ListEffects {
     constructor(private action$: Actions, private http: HttpClient, private apollo: Apollo) { }
 
-    // @Effect()
-    // GetLists$: Observable<Action> = this.action$
-    //     .ofType<ListActions.GetLists>(ListActions.GET_LISTS)
-    //     .pipe(
-    //         switchMap(action => {
-    //             return this.http.get('http://localhost:3000/api/v1/lists/' + action.payload.boardId).pipe(
-    //                 map((res: Response) => {
-    //                     return new ListActions.GetListsSuccess(res['data'] as ListState[]);
-    //                 })
-    //             )
-    //         }),
-    //         catchError(
-    //             () => of(new ListActions.GetListsError())
-    //         )
-    //     );
+    private getListsQuery = gql`
+                    query lists($boardId: String!) {
+                        lists(boardId: $boardId) {
+                            listId
+                            listName
+                            boardId
+                        }
+                    }
+                `;
+    private createListMutation = gql`
+                    mutation createList($listName: String!, $boardId: String!) {
+                        createList(listName: $listName, boardId: $boardId) {
+                            listId
+                            listName
+                            boardId
+                        }
+                    }
+                `;
 
     @Effect()
     GetLists$: Observable<Action> = this.action$
@@ -35,15 +38,7 @@ export class ListEffects {
         .pipe(
             switchMap(action => {
                 return this.apollo.watchQuery({
-                    query : gql`
-                        query lists($boardId: String!) {
-                            lists(boardId: $boardId) {
-                                listId
-                                listName
-                                boardId
-                            }
-                        }
-                    `,
+                    query : this.getListsQuery,
                     variables : {
                         "boardId": action.payload.boardId.toString()
                     }
@@ -58,24 +53,27 @@ export class ListEffects {
             )
         )
     
-    @Effect()
-    CreateList$: Observable<Action> = this.action$
-        .ofType<ListActions.CreateList>(ListActions.CREATE_LIST)
-        .pipe(
-            switchMap(action => {
-                return this.http.post('http://localhost:3000/api/v1/list/', action.payload)
-                .pipe(
-                    map(
-                        (res: Response) => {
-                            return new ListActions.CreateListSuccess(new Array(res['data']) as ListState[]);
+        @Effect()
+        CreateList$: Observable<Action> = this.action$
+            .ofType<ListActions.CreateList>(ListActions.CREATE_LIST)
+            .pipe(
+                switchMap(action => {
+                    return this.apollo.mutate({
+                        mutation: this.createListMutation,
+                        variables : {
+                            "boardId": action.payload.boardId,
+                            "listName": action.payload.listName
                         }
+                    }).pipe(
+                        map(res => {
+                            return new ListActions.CreateListSuccess(res.data['createList']);
+                        })
                     )
+                }),
+                catchError(
+                    () => of(new ListActions.CreateListError())
                 )
-            }),
-            catchError(
-                () => of(new ListActions.CreateListError())
             )
-        )
 
     @Effect()
     DeleteList$: Observable<Action> = this.action$
