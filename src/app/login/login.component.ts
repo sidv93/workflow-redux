@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.authState$ = this.store.select(store => store);
   }
 
   public login(formValues: any): void {

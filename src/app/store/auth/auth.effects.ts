@@ -20,20 +20,22 @@ export class AuthEffects {
         .ofType<AuthActions.Authenticate>(AuthActions.AUTHENTICATE)
         .pipe(
             switchMap(action => {
+                console.log('auth payload-' + JSON.stringify(action.payload));
                 return this.apollo.watchQuery({
                     query: gql`
-                        query auth($userId: String!, $password: String! ) {
-                            auth(userId: $userId, password: $password) {
+                        query auth($userId: String!, $password: String!, $rememberMe: Boolean! ) {
+                            auth(userId: $userId, password: $password, rememberMe: $rememberMe) {
                                 userId
                             }
                         }
                     `,
                     variables: {
                         "userId": action.payload.userId,
-                        "password": action.payload.password
+                        "password": action.payload.password,
+                        "rememberMe": action.payload.rememberMe
                     }
                     }).valueChanges.pipe(map(res => {
-                        return new AuthActions.AuthSucess({username: res.data['auth'].userId,password: '',loggedIn: false} as AuthState)
+                        return new AuthActions.AuthSucess({username: res.data['auth'].userId,password: '',loggedIn: false} as AuthState);                        
                     }));
             }),
             catchError(
@@ -45,7 +47,9 @@ export class AuthEffects {
     AuthSuccess$: Observable<Action> = this.action$
         .ofType<AuthActions.AuthSucess>(AuthActions.AUTH_SUCCESS)
         .pipe(
-            tap((user) => {
+            tap((action) => {
+                console.log('before routing');
+                console.log('user-' + JSON.stringify(action));
                 this.router.navigate(['dashboard']);
             })
         );

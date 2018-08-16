@@ -14,6 +14,7 @@ export const DELETE_BOARD_FAILURE = '[Board] DELETE_BOARD_FAILURE';
 
 export class GetBoards implements Action {
     readonly type = GET_BOARDS;
+    constructor(public payload: any) {}
 }
 
 export class GetBoardsSuccess implements Action {

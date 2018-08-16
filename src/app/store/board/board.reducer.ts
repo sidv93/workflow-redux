@@ -14,7 +14,7 @@ const defaultState: BoardListState = {
 export function BoardReducer(state = defaultState, action: Action) {
     switch (action.type) {
         case BoardActions.GET_BOARDS: {
-            return { ...state, loading: true }
+            return { ...state, userId: action.payload.userId, loading: true }
         }
         case BoardActions.GET_BOARDS_SUCCESS: {
             return {

@@ -4,6 +4,8 @@ import { BoardListState, BoardState } from '../store/board/board.state';
 import * as BoardActions from '../store/board/board.action';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthState } from '../store/auth/auth.state';
+import { take } from '../../../node_modules/rxjs/operators';
 
 export interface AppState {
   todos: BoardListState;
@@ -17,22 +19,25 @@ export interface AppState {
 export class DashboardComponent implements OnInit {
 
   public boardState$: Observable<BoardState[]>;
-  constructor(private store: Store<BoardListState>, private router: Router) { }
+  constructor(private boardStore: Store<BoardListState>, private router: Router,
+    private authStore: Store<AuthState>) { }
 
   ngOnInit() {
-    this.boardState$ = this.store.select(store => store.boards);
-    this.store.dispatch(new BoardActions.GetBoards());
+    this.boardState$ = this.boardStore.select(store => store.boards);
+    this.authStore.select(store => store).pipe(take(1)).subscribe(val => {
+      this.boardStore.dispatch(new BoardActions.GetBoards({userId: val['auth'].username}));
+    });
   }
 
   public addBoard() {
     let boardName = prompt('Enter board name');
     if (boardName) {
-      this.store.dispatch(new BoardActions.CreateBoard(boardName));
+      this.boardStore.dispatch(new BoardActions.CreateBoard(boardName));
     }
   }
 
   public deleteBoard(boardId:string) {
-    this.store.dispatch(new BoardActions.DeleteBoard({
+    this.boardStore.dispatch(new BoardActions.DeleteBoard({
       boardId: boardId
     }));
   }

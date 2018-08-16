@@ -29,6 +29,22 @@ export class CardEffects {
             }
         }
     `;
+    private deleteCardMutation = gql`
+        mutation deleteCard($cardId: String) {
+            deleteCard(cardId: $cardId) {
+                cardId
+            }
+        }
+    `;
+    private updateCardMutation = gql`
+        mutation updateCard($cardId: String!, $cardData: String!) {
+            updateCard(cardId: $cardId, cardData: $cardData) {
+                cardId
+                cardData
+                listId
+            }
+        }
+    `;
 
     @Effect()
     GetCards$: Observable<Action> = this.action$
@@ -78,9 +94,16 @@ export class CardEffects {
         .ofType<CardActions.DeleteCard>(CardActions.DELETE_CARD)
         .pipe(
             switchMap(action => {
-                return this.http.delete('http://localhost:3000/api/v1/card/' + action.payload.cardId).pipe(
-                    map((res: Response) => {
-                        return new CardActions.DeleteCardSuccess(action.payload.cardId);
+                console.log('delete card payload-' + JSON.stringify(action.payload));
+                return this.apollo.mutate({
+                    mutation: this.deleteCardMutation,
+                    variables: {
+                        cardId: action.payload.cardId
+                    }
+                }).pipe(
+                    map(res => {
+                        console.log('card delete response=' + JSON.stringify(res));
+                        return new CardActions.DeleteCardSuccess({});
                     })
                 )
             }),
@@ -90,13 +113,21 @@ export class CardEffects {
         )
 
     @Effect()
-    UpdateCard$: Observable<Action> = this.action$
+    UpdateCard$:Observable<Action> = this.action$
         .ofType<CardActions.UpdateCard>(CardActions.UPDATE_CARD)
         .pipe(
-            switchMap(action =>  {
-                return this.http.put('http://localhost:3000/api/v1/card/' + action.payload.cardId, {cardData: action.payload.cardData}).pipe(
-                    map((res: Response) => {
-                        return new CardActions.UpdateCardSuccess(action.payload);
+            switchMap(action => {
+                console.log('payload= '+JSON.stringify(action.payload));
+                return this.apollo.mutate({
+                    mutation: this.updateCardMutation,
+                    variables: {
+                        cardId: action.payload.cardId,
+                        cardData: action.payload.cardData
+                    }
+                }).pipe(
+                    map(res => {
+                        console.log('update card response-' + JSON.stringify(res));
+                        return new CardActions.UpdateCardSuccess({});
                     })
                 )
             }),

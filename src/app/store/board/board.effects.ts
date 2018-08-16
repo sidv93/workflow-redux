@@ -32,7 +32,14 @@ export class BoardEffects {
                                 }
                                 
                             }
-                            `;           
+                            `;      
+    private deleteBoardMutation = gql`
+                            mutation deleteBoard($boardId: String!) {
+                                deleteBoard(boardId: $boardId) {
+                                    boardId
+                                }
+                            }
+                        `;
     @Effect()
     GetBoards$: Observable<Action> = this.action$
         .ofType<BoardActions.GetBoards>(BoardActions.GET_BOARDS)
@@ -41,7 +48,7 @@ export class BoardEffects {
                 return this.apollo.watchQuery({
                     query: this.getBoardsQuery,
                     variables: {
-                        "user": 'Sid' 
+                        "user": action.payload.userId
                     }
                 }).valueChanges.pipe(
                     map(res => {
@@ -80,15 +87,19 @@ export class BoardEffects {
         .ofType<BoardActions.DeleteBoard>(BoardActions.DELETE_BOARD)
         .pipe(
             switchMap(action => {
-                return this.http.delete('http://localhost:3000/api/v1/board/' + action.payload.boardId)
-                    .pipe(
-                        map((res: Response) => {
-                            return new BoardActions.DeleteBoardSuccess();
-                        })
-                    )
+                console.log('payload-' + action.payload);
+                return this.apollo.mutate({
+                    mutation: this.deleteBoardMutation,
+                    variables: {
+                        boardId: action.payload.boardId
+                    }
+                }).pipe(map(res => {
+                    console.log('delere response=' + JSON.stringify(res));
+                    return new BoardActions.DeleteBoardSuccess();
+                }))
             }),
             catchError(
-                () =>of(new BoardActions.DeleteBoardFailure())
+                () => of(new BoardActions.DeleteBoardFailure())
             )
         )
     

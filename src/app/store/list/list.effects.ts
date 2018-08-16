@@ -31,6 +31,13 @@ export class ListEffects {
                         }
                     }
                 `;
+    private deleteListMutation = gql`
+                    mutation deleteList($listId: String!) {
+                        deleteList(listId: $listId) {
+                            listId
+                        }
+                    }
+    `;
 
     @Effect()
     GetLists$: Observable<Action> = this.action$
@@ -80,9 +87,16 @@ export class ListEffects {
         .ofType<ListActions.DeleteList>(ListActions.DELETE_LIST)
         .pipe(
             switchMap(action => {
-                return this.http.delete('http://localhost:3000/api/v1/list/' + action.payload.listId)
+                console.log('delete list payload=' + JSON.stringify(action.payload));
+                return this.apollo.mutate({
+                    mutation: this.deleteListMutation,
+                    variables: {
+                        listId: action.payload.listId
+                    }
+                })
                 .pipe(
                     map((res: Response) => {
+                        console.log('delete list res-' + JSON.stringify(res));
                         return new ListActions.DeleteListSuccess(action.payload.listId);
                     })
                 )
